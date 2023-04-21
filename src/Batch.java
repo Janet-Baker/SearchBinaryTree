@@ -4,32 +4,28 @@ import org.jfree.data.category.CategoryDataset;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+public class Batch {
     public static void main(String[] args) {
         // 取仿真次数
-        System.out.println("仿真次数");
         Scanner scanner = new Scanner(System.in);
         int count = scanner.nextInt();
         if (count <= 0) {
             // 不想玩啦？
             throw new IllegalArgumentException("仿真次数必须大于0");
         }
-
         // 保存每次仿真的成功次数
         ArrayList<Integer> times = new ArrayList<>();
         // 保存每次仿真的标签数
         ArrayList<Integer> all = new ArrayList<>();
         // 对每一次仿真
         // countLeft 为剩余仿真次数
-        for (int countLeft = count; countLeft > 0; countLeft--) {
+        for (int iterator = 1; iterator <= count; iterator++) {
             // 仿真的成功次数
             int time = 0;
             // 成功个数
             int success = 0;
             // 取标签总数
-            System.out.println("标签总数为");
-            Scanner sc = new Scanner(System.in);
-            int n = sc.nextInt();
+            int n = iterator;
             // 保存标签总数，用于画图
             all.add(n);
             // 保存标签的列表
@@ -40,7 +36,7 @@ public class Main {
             StringBuilder currentSignal = new StringBuilder(TagOperations.capacity);
             // 查找结果
             int seekResult;
-            // 初始化前缀列表（二进制树，先根序存储）
+            // 初始化二进制前缀列表
             signalList.add(new StringBuilder(currentSignal).append("0"));
             signalList.add(new StringBuilder(currentSignal).append("1"));
             // 对每一个二进制前缀
@@ -72,19 +68,18 @@ public class Main {
                         // 未知错误
                         throw new RuntimeException("判断匹配结果时发生未知错误");
                 }
-                // System.out.println("    当前成功识别总数为：" + success);
             }
 
             // 识别结束
-            System.out.println("识别次数为" + time + "次，标签总数为：" + success + "  识别完成！");
+            // System.out.println("识别次数为" + time + "次，标签总数为：" + success + "  识别完成！");
             times.add(time);
         }
+        // 制表
+        Table.saveAsCsvTable("out/csv/table.csv", all, times);
         // 模拟结束，画图
-        {
-            Picture pic = new Picture();
-            CategoryDataset categoryDataset = pic.createDataset(all, times);
-            JFreeChart jFreeChart = pic.createChart(categoryDataset);
-            pic.saveAsFile(jFreeChart, "out/jpg/line.jpg", 600, 400);
-        }
+        Picture pic = new Picture();
+        CategoryDataset categoryDataset = pic.createDataset(all, times);
+        JFreeChart jFreeChart = pic.createChart(categoryDataset);
+        pic.saveAsFile(jFreeChart, "out/jpg/line.jpg", 600, 400);
     }
 }

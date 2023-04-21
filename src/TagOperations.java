@@ -3,16 +3,17 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class TagOperations {
+    // capacity 表示二进制数的深度限制
+    // 16位是有重复的，这很不好；64位又太吃内存。
+    // 标签ID是capacity(=32)位的二进制数
+    public static final int capacity = 32;
+
     // CreateTags(int n) 创建 n 个标签
-    public static ArrayList<String> CreateTags(int amountOfTagsToCreate) {
+    public static ArrayList<String> createTags(int amountOfTagsToCreate) {
         // 最终返回的标签列表
         // 使用 HashSet 防止生成重复的标签
         HashSet<String> setOfTags = new HashSet<>();
         Random rd = new Random();
-        // capacity 表示标签ID的长度限制
-        // 16位是有重复ID的，这很不好；64位又太慢。
-        // 标签ID是capacity(=32)位的二进制数
-        int capacity = 32;
         while (setOfTags.size() < amountOfTagsToCreate) {
             StringBuilder s = new StringBuilder(capacity);
             // j 为标签ID位数。每一位都是随机生成的0或1。

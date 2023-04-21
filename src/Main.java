@@ -33,7 +33,7 @@ public class Main {
             // 保存标签总数，用于画图
             all.add(n);
             // 保存标签的列表
-            ArrayList<StringBuilder> list = TagOperations.CreateTags(n);
+            ArrayList<String> tagList = TagOperations.CreateTags(n);
             // 保存二进制前缀的列表
             ArrayList<StringBuilder> signalList = new ArrayList<>();
             // 二进制前缀 当前发出信号
@@ -48,7 +48,7 @@ public class Main {
                 // 取出二进制前缀
                 currentSignal = signalList.get(0);
                 // value 查找结果
-                seekResult = TagOperations.seek(currentSignal, list);
+                seekResult = TagOperations.seek(currentSignal, tagList);
                 // 次数+1
                 time++;
                 // 从列表中删除
@@ -64,7 +64,7 @@ public class Main {
                         success++;
                         break;
                     case 2:
-                        // 有冲突
+                        // 有冲突，增加前缀长度再次查询
                         signalList.add(0, new StringBuilder(currentSignal).append("0"));
                         signalList.add(1, new StringBuilder(currentSignal).append("1"));
                         break;

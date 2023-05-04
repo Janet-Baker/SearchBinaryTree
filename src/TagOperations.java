@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
-public class TagOperations {
+public final class TagOperations {
     // capacity 表示二进制数的深度限制
     // 16位是有重复的，这很不好；64位又太吃内存。
     // 标签ID是capacity(=32)位的二进制数
@@ -29,15 +29,18 @@ public class TagOperations {
 
     public static int seek(StringBuilder signal, ArrayList<String> tagsToProcess) {
         int count = 0;
-        int seekResult;
         // 记录符合前缀的第一个标签的id
         String first = null;
+        String finalSignal = signal.toString();
         for (String string : tagsToProcess) {
-            if (string.startsWith(signal.toString())) {
+            if (string.startsWith(finalSignal)) {
                 count++;
                 if (count == 1) {
                     // 记录符合前缀的第一个标签的id
                     first = string;
+                } else if (count == 2){
+                    // 有冲突，不用继续循环了
+                    return 2;
                 }
             }
         }
@@ -45,21 +48,15 @@ public class TagOperations {
         switch (count) {
             case 0:
                 // System.out.print("发出信号为 " + signal + "  无响应");
-                seekResult = 0;
-                break;
+                return 0;
             case 1:
                 // System.out.print("发出信号为 " + signal + "  识别成功");
                 // 识别成功后删除在该树的标签
                 String finalFirst = first;
                 tagsToProcess.removeIf(e -> e.equals(finalFirst));
-                seekResult = 1;
-                break;
+                return 1;
             default:
-                // 有冲突标签，识别失败
-                seekResult = 2;
-                // System.out.print("发出信号为 " + signal + "  冲突个数" + count);
-                break;
+                return 2;
         }
-        return seekResult;
     }
 }

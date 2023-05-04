@@ -8,12 +8,8 @@ public class Main {
     public static void main(String[] args) {
         // 取仿真次数
         System.out.println("仿真次数");
-        Scanner scanner = new Scanner(System.in);
-        int count = scanner.nextInt();
-        if (count <= 0) {
-            // 不想玩啦？
-            throw new IllegalArgumentException("仿真次数必须大于0");
-        }
+        int count = new Scanner(System.in).nextInt();
+        if (count <= 0) return;
 
         // 保存每次仿真的成功次数
         ArrayList<Integer> times = new ArrayList<>();
@@ -28,8 +24,7 @@ public class Main {
             int success = 0;
             // 取标签总数
             System.out.println("标签总数为");
-            Scanner sc = new Scanner(System.in);
-            int n = sc.nextInt();
+            int n = new Scanner(System.in).nextInt();
             // 保存标签总数，用于画图
             all.add(n);
             // 保存标签的列表
@@ -41,8 +36,8 @@ public class Main {
             // 查找结果
             int seekResult;
             // 初始化前缀列表（二进制树，先根序存储）
-            signalList.add(new StringBuilder(currentSignal).append("0"));
-            signalList.add(new StringBuilder(currentSignal).append("1"));
+            signalList.add(new StringBuilder(currentSignal).append('0'));
+            signalList.add(new StringBuilder(currentSignal).append('1'));
             // 对每一个二进制前缀
             while (signalList.size() > 0) {
                 // 取出二进制前缀
